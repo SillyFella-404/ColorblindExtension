@@ -1,13 +1,30 @@
 <!DOCTYPE html>
 <html>
-<div id="main-menu">
-  <h1>Settings</h1>
-  <button id="go-to-account">Account Info</button>
-  <button id="go-to-stats">View Stats</button>
-</div>
+<head>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
 
-<div id="account-menu" style="display: none;">
-  <button id="back-from-account">Back</button>
-  <p>User: Dev_123</p>
-</div>
+  <div id="view-main" class="view">
+    <h1>Main Menu</h1>
+    <button id="btn-settings">Open Settings</button>
+    <button id="btn-colors">Color Sliders</button>
+  </div>
+
+  <div id="view-settings" class="view" style="display: none;">
+    <button class="back-btn">← Back</button>
+    <h2>Settings</h2>
+    <label><input type="checkbox"> Enable Notifications</label>
+  </div>
+
+  <div id="view-colors" class="view" style="display: none;">
+    <button class="back-btn">← Back</button>
+    <h2>Colors</h2>
+    <input type="range" min="0" max="255" id="r-slider">
+    <input type="range" min="0" max="255" id="g-slider">
+    <input type="range" min="0" max="255" id="b-slider">
+  </div>
+
+  <script src="popup.js"></script>
+</body>
 </html>
