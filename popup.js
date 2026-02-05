@@ -1,13 +1,25 @@
 // popup.js
-const mainMenu = document.getElementById('main-menu');
-const accountMenu = document.getElementById('account-menu');
 
-document.getElementById('go-to-account').addEventListener('click', () => {
-  mainMenu.style.display = 'none';
-  accountMenu.style.display = 'block';
-});
+// View containers
+const views = {
+  main: document.getElementById('view-main'),
+  settings: document.getElementById('view-settings'),
+  colors: document.getElementById('view-colors')
+};
 
-document.getElementById('back-from-account').addEventListener('click', () => {
-  accountMenu.style.display = 'none';
-  mainMenu.style.display = 'block';
+// Helper to switch views
+function showView(viewKey) {
+  // Hide all views
+  Object.values(views).forEach(v => v.style.display = 'none');
+  // Show the requested one
+  views[viewKey].style.display = 'block';
+}
+
+// Event Listeners for Navigation
+document.getElementById('btn-settings').onclick = () => showView('settings');
+document.getElementById('btn-colors').onclick = () => showView('colors');
+
+// Handle all "Back" buttons
+document.querySelectorAll('.back-btn').forEach(btn => {
+  btn.onclick = () => showView('main');
 });
