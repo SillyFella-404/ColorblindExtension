@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Colorblind Extension",
+  "name": "ColorblindExtension",
   "version": "1.0",
-  "description": "extensino description",
+  "description": "extension description",
   "action": {
     "default_popup": "popup.html"
   },
