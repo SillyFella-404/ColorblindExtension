@@ -5,36 +5,27 @@
 </head>
 <body>
 
-  <!-- Main menu page -->
-  <div id="view-main" class="view">
-    
+  <div id="view-main" class="view active">
     <h1>Main Menu</h1>
-
-    <!-- Navigation buttons -->
     <button id="btn-settings">Open Settings</button>
     <button id="btn-colors">Color Sliders</button>
-    
   </div>
 
-  
-<!-- Settings page -->
-  <div id="view-settings" class="view" style="display: none;">
-    
-    <button class="back-btn">Back</button>
+  <div id="view-settings" class="view">
+    <button class="back-btn">← Back</button>
     <h2>Settings</h2>
-    <label><input type="checkbox"> Enable Notifications</label>
-    
+    <label><input type="checkbox" id="notify-toggle"> Enable Notifications</label>
   </div>
 
-<!-- Color sliders page -->
   <div id="view-colors" class="view">
-    
-    <button class="back-btn">Back</button>
+    <button class="back-btn">← Back</button>
     <h2>Colors</h2>
+    <label>Red</label>
     <input type="range" min="0" max="255" id="r-slider">
+    <label>Green</label>
     <input type="range" min="0" max="255" id="g-slider">
+    <label>Blue</label>
     <input type="range" min="0" max="255" id="b-slider">
-    
   </div>
 
   <script src="popup.js"></script>
