@@ -7,46 +7,41 @@ const views = {
   colors: document.getElementById('view-colors')
 };
 
-// Helper to switch views
+// Helper to switch views using classes instead of inline styles
 function showView(viewKey) {
-  // Hide all views
-  Object.values(views).forEach(v => v.style.display = 'none');
-  // Show the requested one
-  views[viewKey].style.display = 'block';
+  Object.values(views).forEach(v => v.classList.remove('active'));
+  views[viewKey].classList.add('active');
 }
 
-// Event Listeners for Navigation
+// Navigation
 document.getElementById('btn-settings').onclick = () => showView('settings');
 document.getElementById('btn-colors').onclick = () => showView('colors');
 
-// Handle all "Back" buttons
 document.querySelectorAll('.back-btn').forEach(btn => {
   btn.onclick = () => showView('main');
 });
 
-// 1. Select your elements
-const settingsCheckbox = document.querySelector('#view-settings input[type="checkbox"]');
+// Elements
+const settingsCheckbox = document.getElementById('notify-toggle');
 const rSlider = document.getElementById('r-slider');
 const gSlider = document.getElementById('g-slider');
 const bSlider = document.getElementById('b-slider');
 
-// 2. LOAD function: Runs immediately when popup opens
+// Load Data
 function loadSavedData() {
   chrome.storage.local.get(['notifications', 'red', 'green', 'blue'], (data) => {
     if (data.notifications !== undefined) settingsCheckbox.checked = data.notifications;
     if (data.red) rSlider.value = data.red;
     if (data.green) gSlider.value = data.green;
     if (data.blue) bSlider.value = data.blue;
-    
   });
 }
 
-// 3. SAVE functions: Triggered by user input
-settingsCheckbox.addEventListener('change', () => {
+// Save Data
+settingsCheckbox.onchange = () => {
   chrome.storage.local.set({ notifications: settingsCheckbox.checked });
-});
+};
 
-// Helper for sliders
 const saveColors = () => {
   chrome.storage.local.set({
     red: rSlider.value,
