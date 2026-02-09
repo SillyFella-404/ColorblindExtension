@@ -30,5 +30,6 @@ button:not(.back-btn) {
 
 .view-colors {
   display: flex;         /* make the sliders not go to the next row */
+  flex-direction: column; /* make them actually go vertically */
   gap: 15px;             /* put a gap between them */
 }
