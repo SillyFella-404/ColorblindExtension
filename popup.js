@@ -38,8 +38,6 @@ function loadSavedData() {
     if (data.green) gSlider.value = data.green;
     if (data.blue) bSlider.value = data.blue;
     
-    // Optional: Update the UI color preview if you have one
-    updatePreview(data.red, data.green, data.blue);
   });
 }
 
