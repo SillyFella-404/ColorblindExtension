@@ -27,3 +27,8 @@ button:not(.back-btn) {
   padding: 10px;
   cursor: pointer;
 }
+
+.view-colors {
+  display: flex;         /* make the sliders not go to the next row */
+  gap: 15px;             /* put a gap between them */
+}
