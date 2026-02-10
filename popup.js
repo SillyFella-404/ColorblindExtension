@@ -26,6 +26,7 @@ const settingsCheckbox = document.getElementById('notify-toggle');
 const rSlider = document.getElementById('r-slider');
 const gSlider = document.getElementById('g-slider');
 const bSlider = document.getElementById('b-slider');
+const RSliderValueDisplay = document.getElementById('sliderValue')
 
 // Load Data
 function loadSavedData() {
@@ -35,6 +36,9 @@ function loadSavedData() {
     if (data.green) gSlider.value = data.green;
     if (data.blue) bSlider.value = data.blue;
   });
+}
+function updateRSliderValue(){
+  RSliderValueDisplay.textContent = rSlider.value;
 }
 
 // Save Data
@@ -56,3 +60,5 @@ bSlider.oninput = saveColors;
 
 // Initialize
 loadSavedData();
+updateRSliderValue();
+rSlider.addEventListener('input', updateRSliderValue);
