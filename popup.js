@@ -27,7 +27,7 @@ const rSlider = document.getElementById('r-slider');
 const gSlider = document.getElementById('g-slider');
 const bSlider = document.getElementById('b-slider');
 const sSlider = document.getElementById('s-slider');
-const RSliderValueDisplay = document.getElementById('sliderValue');
+const SSliderValueDisplay = document.getElementById('sliderValue');
 
 // Load Data
 function loadSavedData() {
