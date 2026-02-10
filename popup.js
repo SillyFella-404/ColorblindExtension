@@ -38,7 +38,7 @@ function loadSavedData() {
     if (data.blue) bSlider.value = data.blue;
   });
 }
-function updateRSliderValue(){
+function updateSSliderValue(){
   SSliderValueDisplay.textContent = sSlider.value;
 }
 
