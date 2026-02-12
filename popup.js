@@ -30,6 +30,19 @@ const rVal = document.getElementById('r-val');
 const gVal = document.getElementById('g-val');
 const bVal = document.getElementById('b-val');
 
+// dropdown and section elements
+const colorMenu = document.getElementById('color-menu');
+const exposureSection = document.getElementById('exposure-section');
+
+// toggle exposure section based on dropdown
+colorMenu.onchange = () => {
+  if (colorMenu.value === 'exposure') {
+    exposureSection.classList.remove('hidden');
+  } else {
+    exposureSection.classList.add('hidden');
+  }
+};
+
 // update text labels to match slider values
 function updateLabels() {
   rVal.textContent = rSlider.value;
@@ -41,9 +54,10 @@ function updateLabels() {
 function loadSavedData() {
   chrome.storage.local.get(['notifications', 'red', 'green', 'blue'], (data) => {
     if (data.notifications !== undefined) settingsCheckbox.checked = data.notifications;
-    if (data.red) rSlider.value = data.red;
-    if (data.green) gSlider.value = data.green;
-    if (data.blue) bSlider.value = data.blue;
+    // use 0 as default if no data exists
+    rSlider.value = data.red !== undefined ? data.red : 0;
+    gSlider.value = data.green !== undefined ? data.green : 0;
+    bSlider.value = data.blue !== undefined ? data.blue : 0;
     updateLabels(); // sync labels after loading
   });
 }
