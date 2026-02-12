@@ -14,16 +14,16 @@
 }
 
 @font-face {
-  font-family: "Noto Sans";
+  font-family: "Noto Sans Lighter";
   src: url("./fonts/NotoSans-Lighter.ttf") format("truetype");
-  font-weight: 150;
+  font-weight: 200;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Ubuntu";
+  font-family: "Ubuntu Lighter";
   src: url("./fonts/Ubuntu-Lighter.ttf") format("truetype");
-  font-weight: 150;
+  font-weight: 200;
   font-style: normal;
 }
 
