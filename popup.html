@@ -20,12 +20,21 @@
   <div id="view-colors" class="view">
     <button class="back-btn">Back</button>
     <h2>Colors</h2>
-    <label>Red</label>
-    <input type="range" min="0" max="255" id="r-slider">
-    <label>Green</label>
-    <input type="range" min="0" max="255" id="g-slider">
-    <label>Blue</label>
-    <input type="range" min="0" max="255" id="b-slider">
+    
+    <div class="slider-group">
+      <label>Red: <span id="r-val">0</span></label>
+      <input type="range" min="0" max="255" id="r-slider">
+    </div>
+
+    <div class="slider-group">
+      <label>Green: <span id="g-val">0</span></label>
+      <input type="range" min="0" max="255" id="g-slider">
+    </div>
+
+    <div class="slider-group">
+      <label>Blue: <span id="b-val">0</span></label>
+      <input type="range" min="0" max="255" id="b-slider">
+    </div>
   </div>
 
   <script src="popup.js"></script>
