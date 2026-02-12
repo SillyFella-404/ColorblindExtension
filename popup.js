@@ -28,21 +28,22 @@ const rVal = document.getElementById('r-val');
 const gVal = document.getElementById('g-val');
 const bVal = document.getElementById('b-val');
 
-// accordion logic
-function setupAccordion(headerId, contentId) {
+// accordion logic using simple characters for arrows
+function setupAccordion(headerId, contentId, arrowId) {
   const header = document.getElementById(headerId);
   const content = document.getElementById(contentId);
-  const arrow = header.querySelector('.arrow');
+  const arrow = document.getElementById(arrowId);
 
   header.onclick = () => {
     const isHidden = content.classList.contains('hidden');
     content.classList.toggle('hidden');
-    arrow.textContent = isHidden ? '▼' : '▶';
+    // toggle between v for down and > for right
+    arrow.textContent = isHidden ? 'v' : '>';
   };
 }
 
-setupAccordion('header-exposure', 'section-exposure');
-setupAccordion('header-other', 'section-other');
+setupAccordion('header-exposure', 'section-exposure', 'arrow-exposure');
+setupAccordion('header-other', 'section-other', 'arrow-other');
 
 // update text labels to match slider values
 function updateLabels() {
