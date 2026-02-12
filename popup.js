@@ -34,6 +34,7 @@ function setupAccordion(headerId, contentId, arrowId) {
   const content = document.getElementById(contentId);
   const arrow = document.getElementById(arrowId);
 
+  //sick and awesome and totally original arrow rotating mechanism that I didn't copy and paste from geeksforgeeks.com
   header.onclick = () => {
     const isHidden = content.classList.contains('hidden');
     content.classList.toggle('hidden');
