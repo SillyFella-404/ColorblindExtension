@@ -31,13 +31,15 @@ const SSliderValueDisplay = document.getElementById('sliderValue');
 
 // Load Data
 function loadSavedData() {
-  console.log(chrome.storage.local);
   chrome.storage.local.get(['notifications', 'red', 'green', 'blue', 'fontSize'], (data) => {
     if (data.notifications !== undefined) settingsCheckbox.checked = data.notifications;
     if (data.red) rSlider.value = data.red;
     if (data.green) gSlider.value = data.green;
     if (data.blue) bSlider.value = data.blue;
-    if (data.fontSize) sSlider.value = data.fontSize;
+    if (data.fontSize) {
+      sSlider.value = data.fontSize;
+      updateSSliderValue();      
+    }
   });
 }
 function updateSSliderValue(){
