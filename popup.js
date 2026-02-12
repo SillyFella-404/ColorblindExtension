@@ -32,17 +32,17 @@ const SSliderValueDisplay = document.getElementById('sliderValue');
 // Load Data
 function loadSavedData() {
   console.log(chrome.storage.local);
-  chrome.storage.local.get(['notifications', 'red', 'green', 'blue', 'FontSize'], (data) => {
+  chrome.storage.local.get(['notifications', 'red', 'green', 'blue', 'fontSize'], (data) => {
     if (data.notifications !== undefined) settingsCheckbox.checked = data.notifications;
     if (data.red) rSlider.value = data.red;
     if (data.green) gSlider.value = data.green;
     if (data.blue) bSlider.value = data.blue;
-    if (data.FontSize) sSlider.value = data.Fontsize;
+    if (data.fontSize) sSlider.value = data.fontSize;
   });
 }
 function updateSSliderValue(){
   SSliderValueDisplay.textContent = sSlider.value;
-  chrome.storage.local.set({ FontSize: sSlider.value });
+  chrome.storage.local.set({ fontSize: sSlider.value });
 }
 
 // Save Data
