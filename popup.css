@@ -64,6 +64,8 @@ body {
   padding: 0;
   margin-bottom: 5px;
   text-decoration: underline;
+  font-weight: bold;
+
 }
 
 button:not(.back-btn) {
