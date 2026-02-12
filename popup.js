@@ -24,11 +24,11 @@ const settingsCheckbox = document.getElementById('notify-toggle');
 const rSlider = document.getElementById('r-slider');
 const gSlider = document.getElementById('g-slider');
 const bSlider = document.getElementById('b-slider');
-const sSlider = document.getElementById('s-slider'); // New font slider element
+const sSlider = document.getElementById('s-slider');
 const rVal = document.getElementById('r-val');
 const gVal = document.getElementById('g-val');
 const bVal = document.getElementById('b-val');
-const SSliderValueDisplay = document.getElementById('sliderValue'); // New display element
+const SSliderValueDisplay = document.getElementById('sliderValue');
 
 // accordion logic using simple characters for arrows
 function setupAccordion(headerId, contentId, arrowId) {
@@ -53,12 +53,6 @@ function updateLabels() {
   rVal.textContent = rSlider.value;
   gVal.textContent = gSlider.value;
   bVal.textContent = bSlider.value;
-}
-
-// update the font size label and save
-function updateSSliderValue() {
-  SSliderValueDisplay.textContent = sSlider.value;
-  chrome.storage.local.set({ fontSize: sSlider.value });
 }
 
 // load saved data
@@ -99,4 +93,9 @@ settingsCheckbox.onchange = () => {
 
 // initialize
 loadSavedData();
-sSlider.addEventListener('input', updateSSliderValue);
+
+// handle font slider updates
+sSlider.oninput = () => {
+  SSliderValueDisplay.textContent = sSlider.value;
+  chrome.storage.local.set({ fontSize: sSlider.value });
+};
