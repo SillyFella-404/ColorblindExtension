@@ -13,6 +13,20 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "Noto Sans";
+  src: url("./fonts/NotoSans-Lighter.ttf") format("truetype");
+  font-weight: 150;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Ubuntu";
+  src: url("./fonts/Ubuntu-Lighter.ttf") format("truetype");
+  font-weight: 150;
+  font-style: normal;
+}
+
 body {
   background-color: lightgray;
   text-align: center;
