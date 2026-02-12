@@ -6,8 +6,7 @@
 <body>
 
   <div id="view-main" class="view active">
-    <h1>Color Blindness Accessibility Filter</h1>
-    <p style = "font-family: Noto Sans Lighter, Ubuntu Lighter, sans-serif; font-size: 15px; font-weight: 200px;">This extension assists with the viewing of webpages by adjusting the brightness levels of colors to make it easier to differentiate individual colors.</p>
+    <h1>Main Menu</h1>
     <button id="btn-settings">Open Settings</button>
     <button id="btn-colors">Color Sliders</button>
   </div>
@@ -15,42 +14,22 @@
   <div id="view-settings" class="view">
     <button class="back-btn">Back</button>
     <h2>Settings</h2>
-    <label><input type="checkbox" id="notify-toggle"> Enable Notifications</label>
+    <label>Text Font Size</label>
+    <body>1-                 50</body>
+    <span id="sliderValue">50</span>
+    <input type="range" min="1" max="50" step= "1" id="s-slider">
+    <label><input type="checkbox" id="notify-toggle"> Enable Dark Mode</label>
   </div>
 
   <div id="view-colors" class="view">
     <button class="back-btn">Back</button>
     <h2>Colors</h2>
-    <p style = "font-family: Noto Sans Lighter, Ubuntu Lighter, sans-serif; font-size: 15px; font-weight: 200px;">Move the sliders to change the brightness level of the color.</p>
-    
-    <div class="accordion-item">
-      <button class="accordion-header" id="header-exposure">
-        EXPOSURE <span class="arrow" id="arrow-exposure">&gt;</span>
-      </button>
-      <div id="section-exposure" class="accordion-content hidden">
-        <div class="slider-group">
-          <label>Red: <span id="r-val">0</span></label>
-          <input type="range" min="-100" max="100" value="0" id="r-slider">
-        </div>
-        <div class="slider-group">
-          <label>Green: <span id="g-val">0</span></label>
-          <input type="range" min="-100" max="100" value="0" id="g-slider">
-        </div>
-        <div class="slider-group">
-          <label>Blue: <span id="b-val">0</span></label>
-          <input type="range" min="-100" max="100" value="0" id="b-slider">
-        </div>
-      </div>
-    </div>
-
-    <div class="accordion-item">
-      <button class="accordion-header" id="header-other">
-        OTHER <span class="arrow" id="arrow-other">&gt;</span>
-      </button>
-      <div id="section-other" class="accordion-content hidden">
-        <p class="dummy-text">random text element for testing :3</p>
-      </div>
-    </div>
+    <label>Red</label>
+    <input type="range" min="0" max="255" id="r-slider">
+    <label>Green</label>
+    <input type="range" min="0" max="255" id="g-slider">
+    <label>Blue</label>
+    <input type="range" min="0" max="255" id="b-slider">
   </div>
 
   <script src="popup.js"></script>
