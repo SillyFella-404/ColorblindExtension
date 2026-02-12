@@ -10,14 +10,14 @@ body {
   margin: 0;
 }
 
-/* All views are hidden by default */
+/* all views are hidden by default */
 .view {
   display: none;
   flex-direction: column;
-  gap: 15px; /* Consistent spacing for all views */
+  gap: 15px; /* consistent spacing for views */
 }
 
-/* When this class is added via JS, the view becomes visible and flexible */
+/* tha flex so we don't have the ugly lines */
 .view.active {
   display: flex;
 }
@@ -38,8 +38,25 @@ button:not(.back-btn) {
   cursor: pointer;
 }
 
-/* Ensure sliders take up full width of the column */
+/* ensure sliders take up full width of the column */
 input[type="range"] {
   width: 100%;
   cursor: pointer;
+}
+
+/* layout for slider and its label */
+.slider-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.slider-group label {
+  font-size: 0.9em;
+  color: #333;
+}
+
+.slider-group span {
+  color: #007bff; /* highlight the value */
 }
