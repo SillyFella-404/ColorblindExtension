@@ -14,12 +14,17 @@ body {
 .view {
   display: none;
   flex-direction: column;
-  gap: 15px; /* consistent spacing for views */
+  gap: 15px; /* consistent spacing for all views */
 }
 
-/* tha flex so we don't have the ugly lines */
+/* when this class is added via js the view becomes visible and flexible */
 .view.active {
   display: flex;
+}
+
+/* utility to hide elements */
+.hidden {
+  display: none;
 }
 
 .back-btn {
@@ -33,9 +38,10 @@ body {
   text-decoration: underline;
 }
 
-button:not(.back-btn) {
+button:not(.back-btn), select {
   padding: 10px;
   cursor: pointer;
+  margin-bottom: 10px;
 }
 
 /* ensure sliders take up full width of the column */
@@ -50,6 +56,7 @@ input[type="range"] {
   flex-direction: column;
   align-items: flex-start;
   gap: 5px;
+  margin-bottom: 10px;
 }
 
 .slider-group label {
@@ -59,4 +66,9 @@ input[type="range"] {
 
 .slider-group span {
   color: #007bff; /* highlight the value */
+}
+
+h3 {
+  margin-top: 10px;
+  color: #444;
 }
