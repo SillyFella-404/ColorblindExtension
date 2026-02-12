@@ -1,4 +1,3 @@
-/* popup.css */
 body {
   background-color: lightgray;
   text-align: center;
@@ -10,14 +9,14 @@ body {
   margin: 0;
 }
 
-/* all views are hidden by default */
+/* all views hidden by default */
 .view {
   display: none;
   flex-direction: column;
-  gap: 15px; /* consistent spacing for all views */
+  gap: 15px; /* consistent spacing */
 }
 
-/* when this class is added via js the view becomes visible and flexible */
+/* tha flex so no ugly lines */
 .view.active {
   display: flex;
 }
@@ -38,10 +37,40 @@ body {
   text-decoration: underline;
 }
 
-button:not(.back-btn), select {
+button:not(.back-btn) {
   padding: 10px;
   cursor: pointer;
+  margin-bottom: 5px;
+}
+
+/* accordion styles (the collapsibles in color sliders) */
+.accordion-item {
+  border: 1px solid #ccc;
   margin-bottom: 10px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.accordion-header {
+  width: 100%;
+  background: #f8f9fa;
+  border: none;
+  padding: 10px;
+  text-align: left;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.accordion-header:hover {
+  background: #e9ecef;
+}
+
+.accordion-content {
+  padding: 10px;
+  background: #fff;
 }
 
 /* ensure sliders take up full width of the column */
@@ -50,13 +79,13 @@ input[type="range"] {
   cursor: pointer;
 }
 
-/* layout for slider and its label */
+/* layout for slider and label */
 .slider-group {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 5px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .slider-group label {
@@ -65,10 +94,12 @@ input[type="range"] {
 }
 
 .slider-group span {
-  color: #007bff; /* highlight the value */
+  color: #007bff;
 }
 
-h3 {
-  margin-top: 10px;
-  color: #444;
+/* for the extra placeholder color slider option */
+.dummy-text {
+  font-weight: normal;
+  font-size: 0.85em;
+  color: #666;
 }
