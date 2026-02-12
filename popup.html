@@ -21,28 +21,32 @@
     <button class="back-btn">Back</button>
     <h2>Colors</h2>
     
-    <label for="color-menu">Select Category:</label>
-    <select id="color-menu">
-      <option value="none">-- select --</option>
-      <option value="exposure">Exposure</option>
-    </select>
-
-    <div id="exposure-section" class="hidden">
-      <h3>Exposure</h3>
-      
-      <div class="slider-group">
-        <label>Red: <span id="r-val">0</span></label>
-        <input type="range" min="-100" max="100" value="0" id="r-slider">
+    <div class="accordion-item">
+      <button class="accordion-header" id="header-exposure">
+        EXPOSURE <span class="arrow">▶</span>
+      </button>
+      <div id="section-exposure" class="accordion-content hidden">
+        <div class="slider-group">
+          <label>Red: <span id="r-val">0</span></label>
+          <input type="range" min="-100" max="100" value="0" id="r-slider">
+        </div>
+        <div class="slider-group">
+          <label>Green: <span id="g-val">0</span></label>
+          <input type="range" min="-100" max="100" value="0" id="g-slider">
+        </div>
+        <div class="slider-group">
+          <label>Blue: <span id="b-val">0</span></label>
+          <input type="range" min="-100" max="100" value="0" id="b-slider">
+        </div>
       </div>
+    </div>
 
-      <div class="slider-group">
-        <label>Green: <span id="g-val">0</span></label>
-        <input type="range" min="-100" max="100" value="0" id="g-slider">
-      </div>
-
-      <div class="slider-group">
-        <label>Blue: <span id="b-val">0</span></label>
-        <input type="range" min="-100" max="100" value="0" id="b-slider">
+    <div class="accordion-item">
+      <button class="accordion-header" id="header-other">
+        OTHER <span class="arrow">▶</span>
+      </button>
+      <div id="section-other" class="accordion-content hidden">
+        <p class="dummy-text">random text element for testing</p>
       </div>
     </div>
   </div>
