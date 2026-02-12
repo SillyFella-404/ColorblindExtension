@@ -31,6 +31,7 @@ const SSliderValueDisplay = document.getElementById('sliderValue');
 
 // Load Data
 function loadSavedData() {
+  console.log(chrome.storage.local);
   chrome.storage.local.get(['notifications', 'red', 'green', 'blue', 'FontSize'], (data) => {
     if (data.notifications !== undefined) settingsCheckbox.checked = data.notifications;
     if (data.red) rSlider.value = data.red;
