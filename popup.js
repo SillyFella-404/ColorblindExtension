@@ -31,20 +31,23 @@ const SSliderValueDisplay = document.getElementById('sliderValue');
 
 // Load Data
 function loadSavedData() {
-  chrome.storage.local.get(['notifications', 'red', 'green', 'blue'], (data) => {
+  chrome.storage.local.get(['notifications', 'red', 'green', 'blue', 'FontSize'], (data) => {
     if (data.notifications !== undefined) settingsCheckbox.checked = data.notifications;
     if (data.red) rSlider.value = data.red;
     if (data.green) gSlider.value = data.green;
     if (data.blue) bSlider.value = data.blue;
+    if (data.FontSize) sSlider.value = data.Fontsize;
   });
 }
 function updateSSliderValue(){
   SSliderValueDisplay.textContent = sSlider.value;
+  chrome.storage.local.set({ FontSize: sSlider.value });
 }
 
 // Save Data
 settingsCheckbox.onchange = () => {
   chrome.storage.local.set({ notifications: settingsCheckbox.checked });
+
 };
 
 const saveColors = () => {
