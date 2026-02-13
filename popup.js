@@ -81,7 +81,6 @@ settingsCheckbox.onchange = () => {
 
 };
 
-const saveColors = () => {
 // save data and update display
 const handleSliderInput = () => {
   updateLabels();
