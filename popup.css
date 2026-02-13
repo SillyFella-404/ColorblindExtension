@@ -1,25 +1,58 @@
 /* popup.css */
+@font-face {
+  font-family: "Noto Sans";
+  src: url("./fonts/NotoSans-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Ubuntu";
+  src: url("./fonts/Ubuntu-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Noto Sans Lighter";
+  src: url("./fonts/NotoSans-Lighter.ttf") format("truetype");
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Ubuntu Lighter";
+  src: url("./fonts/Ubuntu-Lighter.ttf") format("truetype");
+  font-weight: 200;
+  font-style: normal;
+}
+
 body {
   background-color: lightgray;
   text-align: center;
   font-weight: bold;
   width: 300px;
   min-height: 200px;
-  font-family: "Noto Sans", "Sans-Serif";
+  font-family: "Noto Sans", "Ubuntu", "sans-serif";
   padding: 15px;
   margin: 0;
 }
 
-/* All views are hidden by default */
+/* all views hidden by default */
 .view {
   display: none;
   flex-direction: column;
-  gap: 15px; /* Consistent spacing for all views */
+  gap: 15px; /* consistent spacing */
 }
 
-/* When this class is added via JS, the view becomes visible and flexible */
+/* tha flex so no ugly lines */
 .view.active {
   display: flex;
+}
+
+/* utility to hide elements */
+.hidden {
+  display: none;
 }
 
 .back-btn {
@@ -31,15 +64,73 @@ body {
   padding: 0;
   margin-bottom: 5px;
   text-decoration: underline;
+  font-weight: bold;
+
 }
 
 button:not(.back-btn) {
   padding: 10px;
   cursor: pointer;
+  margin-bottom: 5px;
 }
 
-/* Ensure sliders take up full width of the column */
+/* accordion styles (the collapsibles in color sliders) */
+.accordion-item {
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.accordion-header {
+  width: 100%;
+  background: #f8f9fa;
+  border: none;
+  padding: 10px;
+  text-align: left;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.accordion-header:hover {
+  background: #e9ecef;
+}
+
+.accordion-content {
+  padding: 10px;
+  background: #fff;
+}
+
+/* ensure sliders take up full width of the column */
 input[type="range"] {
   width: 100%;
   cursor: pointer;
+}
+
+/* layout for slider and label */
+.slider-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  margin-bottom: 15px;
+}
+
+.slider-group label {
+  font-size: 0.9em;
+  color: #333;
+}
+
+.slider-group span {
+  color: #007bff;
+}
+
+/* for the extra placeholder color slider option */
+.dummy-text {
+  font-weight: normal;
+  font-size: 0.85em;
+  color: #666;
 }
