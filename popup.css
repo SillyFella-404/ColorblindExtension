@@ -132,11 +132,11 @@ input[type="range"] {
   accent-color: red;
 }
 
-g-slider {
+#g-slider {
   accent-color: green;
 }
 
-b-slider {
+#b-slider {
   accent-color: blue;
 }
 
