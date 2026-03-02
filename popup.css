@@ -128,16 +128,16 @@ input[type="range"] {
   color: #007bff;
 }
 
-#r-slider {
-  accent-color: red;
+.red-slider::-webkit-slider-runnable-track {
+  background: linear-gradient(to right, DarkRed, Red, LightSalmon);
 }
 
-#g-slider {
-  accent-color: green;
+.g-slider::-webkit-slider-runnable-track {
+  background: linear-gradient(to right, DarkGreen, Lime, LightGreen);
 }
 
-#b-slider {
-  accent-color: blue;
+.b-slider::-webkit-slider-runnable-track {
+  background: linear-gradient(to right, LightBlue, Blue, MidnightBlue);
 }
 
 /* for the extra placeholder color slider option */
