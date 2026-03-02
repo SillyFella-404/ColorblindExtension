@@ -128,6 +128,18 @@ input[type="range"] {
   color: #007bff;
 }
 
+#r-slider {
+  accent-color: red;
+}
+
+g-slider {
+  accent-color: green;
+}
+
+b-slider {
+  accent-color: blue;
+}
+
 /* for the extra placeholder color slider option */
 .dummy-text {
   font-weight: normal;
