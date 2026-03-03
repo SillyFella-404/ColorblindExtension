@@ -77,11 +77,9 @@ async function applyColorExposureToTab() {
       // adjust colors for images/videos by singling them out
       const media = document.querySelectorAll('img, video, canvas');
       media.forEach(m => {
-        
-        // copy and pasted this matrix apparently this will adjust specific color channels in images and we multiply on the diagonals or something idk
         m.style.filter = `url('data:image/svg+xml,\
           <svg xmlns="http://www.w3.org/2000/svg">\
-            <filter id="f">\
+            <filter id="f" color-interpolation-filters="sRGB">\
               <feColorMatrix type="matrix" values="\
                 ${rExp} 0 0 0 0 \
                 0 ${gExp} 0 0 0 \
