@@ -59,47 +59,41 @@ function updateLabels() {
 // update brightness of all elements on page by looping thru them and using the stored values
 // but now we're injecting it into the webpage
 async function applyColorExposureToTab() {
-  // get tha active tab
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  
   if (!tab) return;
 
-  // get current values from sliders
   const rExp = parseFloat(rSlider.value) || 0;
   const gExp = parseFloat(gSlider.value) || 0;
   const bExp = parseFloat(bSlider.value) || 0;
 
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    args: [rExp, gExp, bExp], // pass popup values into the tab
+    args: [rExp, gExp, bExp],
     func: (rExp, gExp, bExp) => {
-      const elements = document.querySelectorAll('*');
-      
-      elements.forEach(el => {
-        const style = window.getComputedStyle(el);
-        const bgColor = style.backgroundColor;
+      // no style element?
+      let styleTag = document.getElementById('gemini-exposure-styles');
+      if (!styleTag) {
+        styleTag = document.createElement('style');
+        styleTag.id = 'gemini-exposure-styles';
+        document.head.appendChild(styleTag);
+      }
 
-        const rgb = bgColor.match(/\d+/g);
-        if (!rgb || rgb.length < 3) return;
+      /**
+       * no recursive stacking please I beg
+       */
+      styleTag.textContent = `
+        :root {
+          --combined-brightness: ${avgBrightness};
+        }
 
-        const r = parseInt(rgb[0]);
-        const g = parseInt(rgb[1]);
-        const b = parseInt(rgb[2]);
+        body {
+          filter: brightness(var(--combined-brightness)) !important;
+        }
 
-        let exposureValue = 1;
-
-        // determine which slider affects this element
-        if (r >= g && r >= b) factor = rExp / 100;
-        else if (g >= r && g >= b) factor = gExp / 100;
-        else factor = bExp / 100;
-    
-        // apply brightness directly to the RGB values
-        const newR = Math.min(255, Math.max(0, r * (1 + factor)));
-        const newG = Math.min(255, Math.max(0, g * (1 + factor)));
-        const newB = Math.min(255, Math.max(0, b * (1 + factor)));
-    
-        el.style.backgroundColor = `rgb(${newR}, ${newG}, ${newB})`;
-      });
+        img, video, canvas {
+          filter: brightness(var(--combined-brightness)) !important;
+        }
+      `;
     }
   });
 }
