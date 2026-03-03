@@ -129,15 +129,18 @@ input[type="range"] {
 }
 
 .red-slider::-webkit-slider-runnable-track {
-  background: linear-gradient(to right, DarkRed, Red, LightSalmon);
+  -webkit-appearance: none;
+  background: linear-gradient(-90deg,DarkRed,Red,LightSalmon);
 }
 
 .g-slider::-webkit-slider-runnable-track {
-  background: linear-gradient(to right, DarkGreen, Lime, LightGreen);
+  -webkit-appearance: none;
+  background: linear-gradient(-90deg, DarkGreen, Lime, LightGreen);
 }
 
 .b-slider::-webkit-slider-runnable-track {
-  background: linear-gradient(to right, LightBlue, Blue, MidnightBlue);
+  -webkit-appearance: none;
+  background: linear-gradient(-90deg, LightBlue, Blue, MidnightBlue);
 }
 
 /* for the extra placeholder color slider option */
