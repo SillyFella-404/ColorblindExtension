@@ -60,7 +60,10 @@ function updateLabels() {
 // but now we're injecting it into the webpage
 async function applyColorExposureToTab() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  if (!tab) return;
+  
+  if (!tab || !tab.url || tab.url.startsWith('chrome://') || tab.url.startsWith('edge://')) {
+    return;
+  }
 
   const rExp = parseFloat(rSlider.value) || 0;
   const gExp = parseFloat(gSlider.value) || 0;
@@ -70,30 +73,39 @@ async function applyColorExposureToTab() {
     target: { tabId: tab.id },
     args: [rExp, gExp, bExp],
     func: (rExp, gExp, bExp) => {
-      // no style element?
-      let styleTag = document.getElementById('gemini-exposure-styles');
-      if (!styleTag) {
-        styleTag = document.createElement('style');
-        styleTag.id = 'gemini-exposure-styles';
-        document.head.appendChild(styleTag);
-      }
-
-      /**
-       * no recursive stacking please I beg
-       */
-      styleTag.textContent = `
-        :root {
-          --combined-brightness: ${avgBrightness};
+      // only target elements that actually have content or backgrounds
+      const elements = document.querySelectorAll('div, p, span, section, header, footer, b, i, a, li, h1, h2, h3');
+      
+      elements.forEach(el => {
+        // keep the OG color so no stacking
+        let originalRGB = el.getAttribute('data-orig-color');
+        if (!originalRGB) {
+          originalRGB = window.getComputedStyle(el).backgroundColor;
+          // make sure its not transparent
+          if (originalRGB === 'rgba(0, 0, 0, 0)' || originalRGB === 'transparent') return;
+          el.setAttribute('data-orig-color', originalRGB);
         }
 
-        body {
-          filter: brightness(var(--combined-brightness)) !important;
-        }
+        const rgb = originalRGB.match(/\d+/g);
+        if (!rgb || rgb.length < 3) return;
 
-        img, video, canvas {
-          filter: brightness(var(--combined-brightness)) !important;
-        }
-      `;
+        const r = parseInt(rgb[0]);
+        const g = parseInt(rgb[1]);
+        const b = parseInt(rgb[2]);
+
+        // decide which slider logic to use based on tha dominant color
+        let factor = 0;
+        if (r >= g && r >= b) factor = rExp / 100;
+        else if (g >= r && g >= b) factor = gExp / 100;
+        else factor = bExp / 100;
+
+        // 3BENJAMIN NETENYAHU CHANGE THE BRIGHTNESS OF MY ELEMENTS NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOW
+        const newR = Math.min(255, Math.max(0, r * (1 + factor)));
+        const newG = Math.min(255, Math.max(0, g * (1 + factor)));
+        const newB = Math.min(255, Math.max(0, b * (1 + factor)));
+
+        el.style.backgroundColor = `rgb(${Math.round(newR)}, ${Math.round(newG)}, ${Math.round(newB)})`;
+      });
     }
   });
 }
