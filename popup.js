@@ -74,11 +74,21 @@ async function applyColorExposureToTab() {
     args: [rExp, gExp, bExp],
     func: (rExp, gExp, bExp) => {
       
-      // adjust colors for images/videos
+      // adjust colors for images/videos by singling them out
       const media = document.querySelectorAll('img, video, canvas');
-      const avgExp = 1 + (rExp + gExp + bExp) / 300;
       media.forEach(m => {
-        m.style.filter = `brightness(${avgExp})`;
+        
+        // copy and pasted this matrix apparently this will adjust specific color channels in images and we multiply on the diagonals or something idk
+        m.style.filter = `url('data:image/svg+xml,\
+          <svg xmlns="http://www.w3.org/2000/svg">\
+            <filter id="f">\
+              <feColorMatrix type="matrix" values="\
+                ${rExp} 0 0 0 0 \
+                0 ${gExp} 0 0 0 \
+                0 0 ${bExp} 0 0 \
+                0 0 0 1 0" />\
+            </filter>\
+          </svg>#f')`;
       });
 
       // text & bg colors
