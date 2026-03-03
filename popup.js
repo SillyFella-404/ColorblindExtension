@@ -56,6 +56,46 @@ function updateLabels() {
   bVal.textContent = bSlider.value;
 }
 
+//update brightness of all elements on page by looping thru them and using the stored values
+function applyColorExposure() {
+  const elements = document.querySelectorAll('*');
+  
+  // get current slider values as multipliers (e.g., if slider is 0-100, normalize it)
+  const rExp = parseFloat(rSlider.value) || 0;
+  const gExp = parseFloat(gSlider.value) || 0;
+  const bExp = parseFloat(bSlider.value) || 0;
+
+  elements.forEach(el => {
+    const style = window.getComputedStyle(el);
+    const bgColor = style.backgroundColor;
+
+    // BENJAMIN NETENYAHUUUU (regex) RETURN MY RGB VALUES NOW
+    const rgb = bgColor.match(/\d+/g);
+    if (!rgb || rgb.length < 3) return;
+
+    const r = parseInt(rgb[0]);
+    const g = parseInt(rgb[1]);
+    const b = parseInt(rgb[2]);
+
+    let exposureValue = 1; // default (100% brightness)
+
+    // check which color is most dominant
+    if (r >= g && r >= b) {
+      // closest to red
+      exposureValue = 1 + (rExp / 100);
+    } else if (g >= r && g >= b) {
+      // closest to green
+      exposureValue = 1 + (gExp / 100);
+    } else if (b >= r && b >= g) {
+      // closest to blue
+      exposureValue = 1 + (bExp / 100);
+    }
+
+    // change tha brightness
+    el.style.filter = `brightness(${exposureValue})`;
+  });
+}
+
 // load saved data
 function loadSavedData() {
   chrome.storage.local.get(['notifications', 'red', 'green', 'blue', 'fontSize'], (data) => {
