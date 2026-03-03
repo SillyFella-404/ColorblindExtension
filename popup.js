@@ -73,15 +73,21 @@ async function applyColorExposureToTab() {
     target: { tabId: tab.id },
     args: [rExp, gExp, bExp],
     func: (rExp, gExp, bExp) => {
-      // only target elements that actually have content or backgrounds
+      
+      // adjust colors for images/videos
+      const media = document.querySelectorAll('img, video, canvas');
+      const avgExp = 1 + (rExp + gExp + bExp) / 300;
+      media.forEach(m => {
+        m.style.filter = `brightness(${avgExp})`;
+      });
+
+      // text & bg colors
       const elements = document.querySelectorAll('div, p, span, section, header, footer, b, i, a, li, h1, h2, h3');
       
       elements.forEach(el => {
-        // keep the OG color so no stacking
         let originalRGB = el.getAttribute('data-orig-color');
         if (!originalRGB) {
           originalRGB = window.getComputedStyle(el).backgroundColor;
-          // make sure its not transparent
           if (originalRGB === 'rgba(0, 0, 0, 0)' || originalRGB === 'transparent') return;
           el.setAttribute('data-orig-color', originalRGB);
         }
@@ -93,13 +99,17 @@ async function applyColorExposureToTab() {
         const g = parseInt(rgb[1]);
         const b = parseInt(rgb[2]);
 
-        // decide which slider logic to use based on tha dominant color
-        let factor = 0;
-        if (r >= g && r >= b) factor = rExp / 100;
-        else if (g >= r && g >= b) factor = gExp / 100;
-        else factor = bExp / 100;
+        //no whites or grays
+        const isWhite = r > 220 && g > 220 && b > 220;
+        const isGray = Math.abs(r - g) < 10 && Math.abs(r - b) < 10;
+        if (isWhite && isGray) return;
 
-        // 3BENJAMIN NETENYAHU CHANGE THE BRIGHTNESS OF MY ELEMENTS NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOW
+        let factor = 0;
+        // make sure they are greater not juts equal
+        if (r > g && r > b) factor = rExp / 100;
+        else if (g > r && g >= b) factor = gExp / 100;
+        else if (b > r && b > g) factor = bExp / 100;
+
         const newR = Math.min(255, Math.max(0, r * (1 + factor)));
         const newG = Math.min(255, Math.max(0, g * (1 + factor)));
         const newB = Math.min(255, Math.max(0, b * (1 + factor)));
