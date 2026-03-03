@@ -128,19 +128,25 @@ input[type="range"] {
   color: #007bff;
 }
 
-.red-slider::-webkit-slider-runnable-track {
+.r-slider::-webkit-slider-runnable-track {
   -webkit-appearance: none;
-  background: linear-gradient(-90deg,DarkRed,Red,LightSalmon);
+  width: 100%;
+  height: 10px;
+  background: linear-gradient(to right,DarkRed,Red,LightSalmon);
 }
 
 .g-slider::-webkit-slider-runnable-track {
   -webkit-appearance: none;
-  background: linear-gradient(-90deg, DarkGreen, Lime, LightGreen);
+  width: 100%;
+  height: 10px;
+  background: linear-gradient(to right, DarkGreen, Lime, LightGreen);
 }
 
 .b-slider::-webkit-slider-runnable-track {
   -webkit-appearance: none;
-  background: linear-gradient(-90deg, LightBlue, Blue, MidnightBlue);
+  width: 100%;
+  height: 10px;
+  background: linear-gradient(to right, LightBlue, Blue, MidnightBlue);
 }
 
 /* for the extra placeholder color slider option */
