@@ -88,15 +88,17 @@ async function applyColorExposureToTab() {
 
         let exposureValue = 1;
 
-        if (r >= g && r >= b) {
-          exposureValue = 1 + (rExp / 100);
-        } else if (g >= r && g >= b) {
-          exposureValue = 1 + (gExp / 100);
-        } else if (b >= r && b >= g) {
-          exposureValue = 1 + (bExp / 100);
-        }
-
-        el.style.filter = `brightness(${exposureValue})`;
+        // determine which slider affects this element
+        if (r >= g && r >= b) factor = rExp / 100;
+        else if (g >= r && g >= b) factor = gExp / 100;
+        else factor = bExp / 100;
+    
+        // apply brightness directly to the RGB values
+        const newR = Math.min(255, Math.max(0, r * (1 + factor)));
+        const newG = Math.min(255, Math.max(0, g * (1 + factor)));
+        const newB = Math.min(255, Math.max(0, b * (1 + factor)));
+    
+        el.style.backgroundColor = `rgb(${newR}, ${newG}, ${newB})`;
       });
     }
   });
