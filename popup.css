@@ -128,25 +128,46 @@ input[type="range"] {
   color: #007bff;
 }
 
-.r-slider::-webkit-slider-runnable-track {
+.r-slider {
   -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  background: transparent;
+}
+
+.r-slider::-webkit-slider-runnable-track {
   width: 100%;
   height: 10px;
-  background: linear-gradient(to right,DarkRed,Red,LightSalmon);
+  background: linear-gradient(to right, DarkRed, Red, LightSalmon);
+  border-radius: 5x;
+}
+
+.g-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  background: transparent;
 }
 
 .g-slider::-webkit-slider-runnable-track {
-  -webkit-appearance: none;
   width: 100%;
   height: 10px;
   background: linear-gradient(to right, DarkGreen, Lime, LightGreen);
+  border-radius: 5x;
+}
+
+.b-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  background: transparent;
 }
 
 .b-slider::-webkit-slider-runnable-track {
-  -webkit-appearance: none;
   width: 100%;
   height: 10px;
   background: linear-gradient(to right, LightBlue, Blue, MidnightBlue);
+  border-radius: 5x;
 }
 
 /* for the extra placeholder color slider option */
