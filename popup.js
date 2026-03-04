@@ -157,9 +157,13 @@ settingsCheckbox.onchange = () => {
 
 };
 
-// save data and update display
-const handleSliderInput = () => {
+// update display numbers instantly while dragging
+const handleSliderMove = () => {
   updateLabels();
+};
+
+// save data and inject script ONLY when the slider is released
+const handleSliderRelease = () => {
   chrome.storage.local.set({
     red: rSlider.value,
     green: gSlider.value,
@@ -169,10 +173,15 @@ const handleSliderInput = () => {
   applyColorExposureToTab();
 };
 
-rSlider.oninput = handleSliderInput;
-gSlider.oninput = handleSliderInput;
-bSlider.oninput = handleSliderInput;
+// fire continuously while moving
+rSlider.addEventListener('input', handleSliderMove);
+gSlider.addEventListener('input', handleSliderMove);
+bSlider.addEventListener('input', handleSliderMove);
 
+// fire once when letting go
+rSlider.addEventListener('change', handleSliderRelease);
+gSlider.addEventListener('change', handleSliderRelease);
+bSlider.addEventListener('change', handleSliderRelease);
 // save settings
 settingsCheckbox.onchange = () => {
   chrome.storage.local.set({ notifications: settingsCheckbox.checked });
