@@ -1,11 +1,10 @@
-// view containers
+// view management
 const views = {
   main: document.getElementById('view-main'),
   settings: document.getElementById('view-settings'),
   colors: document.getElementById('view-colors')
 };
 
-// helper to switch views using classes instead of inline styles
 function showView(viewKey) {
   Object.values(views).forEach(v => v.classList.remove('active'));
   views[viewKey].classList.add('active');
@@ -14,74 +13,133 @@ function showView(viewKey) {
 // navigation
 document.getElementById('btn-settings').onclick = () => showView('settings');
 document.getElementById('btn-colors').onclick = () => showView('colors');
-
 document.querySelectorAll('.back-btn').forEach(btn => {
   btn.onclick = () => showView('main');
 });
 
-// elements
-const settingsCheckbox = document.getElementById('notify-toggle');
-const rSlider = document.getElementById('r-slider');
-const gSlider = document.getElementById('g-slider');
-const bSlider = document.getElementById('b-slider');
-const rVal = document.getElementById('r-val');
-const gVal = document.getElementById('g-val');
-const bVal = document.getElementById('b-val');
-
-// accordion logic using simple characters for arrows
+// stolen accordion logic
 function setupAccordion(headerId, contentId, arrowId) {
   const header = document.getElementById(headerId);
   const content = document.getElementById(contentId);
   const arrow = document.getElementById(arrowId);
 
-  //sick and awesome and totally original arrow rotating mechanism that I didn't copy and paste from geeksforgeeks.com
   header.onclick = () => {
     const isHidden = content.classList.contains('hidden');
     content.classList.toggle('hidden');
-    // toggle between v for down and > for right
     arrow.textContent = isHidden ? 'v' : '>';
   };
 }
 
 setupAccordion('header-exposure', 'section-exposure', 'arrow-exposure');
+setupAccordion('header-img-correction', 'section-img-correction', 'arrow-img-correction');
 setupAccordion('header-other', 'section-other', 'arrow-other');
 
-// update text labels to match slider values
-function updateLabels() {
-  rVal.textContent = rSlider.value;
-  gVal.textContent = gSlider.value;
-  bVal.textContent = bSlider.value;
-}
-
-// load saved data
-function loadSavedData() {
-  chrome.storage.local.get(['notifications', 'red', 'green', 'blue'], (data) => {
-    if (data.notifications !== undefined) settingsCheckbox.checked = data.notifications;
-    rSlider.value = data.red !== undefined ? data.red : 0;
-    gSlider.value = data.green !== undefined ? data.green : 0;
-    bSlider.value = data.blue !== undefined ? data.blue : 0;
-    updateLabels(); // sync labels after loading
-  });
-}
-
-// save data and update display
-const handleSliderInput = () => {
-  updateLabels();
-  chrome.storage.local.set({
-    red: rSlider.value,
-    green: gSlider.value,
-    blue: bSlider.value
-  });
+// them elements
+const uiSliders = {
+  r: document.getElementById('r-slider'),
+  g: document.getElementById('g-slider'),
+  b: document.getElementById('b-slider'),
+  rVal: document.getElementById('r-val'),
+  gVal: document.getElementById('g-val'),
+  bVal: document.getElementById('b-val')
 };
 
-rSlider.oninput = handleSliderInput;
-gSlider.oninput = handleSliderInput;
-bSlider.oninput = handleSliderInput;
+const imgSliders = {
+  r: document.getElementById('img-r-slider'),
+  g: document.getElementById('img-g-slider'),
+  b: document.getElementById('img-b-slider'),
+  rVal: document.getElementById('img-r-val'),
+  gVal: document.getElementById('img-g-val'),
+  bVal: document.getElementById('img-b-val')
+};
 
-// save settings
+const settingsCheckbox = document.getElementById('notify-toggle');
+
+// this function is injected into the active tab to update colors *dynamically* 
+function injectStyles(data) {
+  let styleTag = document.getElementById('ext-color-styles');
+  if (!styleTag) {
+    styleTag = document.createElement('style');
+    styleTag.id = 'ext-color-styles';
+    document.head.appendChild(styleTag);
+  }
+
+  // exposure for ui (backgrounds, text, buttons)
+  const uiBright = 1 + (data.red / 100);
+  const uiCont = 1 + (data.green / 100);
+  const uiSat = 1 + (data.blue / 100);
+
+  // color correction for images (REF THIS SHIT RIGGED)
+  const imgHue = data.imgRed || 0;
+  const imgBright = 1 + (data.imgGreen / 100);
+  const imgCont = 1 + (data.imgBlue / 100);
+
+  styleTag.innerHTML = `
+    html {
+      filter: brightness(${uiBright}) contrast(${uiCont}) saturate(${uiSat}) !important;
+    }
+    /* prevent images from getting the global ui filter applied twice */
+    img, video, canvas {
+      filter: hue-rotate(${imgHue}deg) brightness(${imgBright}) contrast(${imgCont}) !important;
+    }
+  `;
+}
+
+// helper to trigger the injection on the current tab
+async function updateTab() {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  if (!tab) return;
+
+  chrome.storage.local.get(null, (data) => {
+    chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      func: injectStyles,
+      args: [data]
+    });
+  });
+}
+
+// storages & labels
+function updateLabels() {
+  uiSliders.rVal.textContent = uiSliders.r.value;
+  uiSliders.gVal.textContent = uiSliders.g.value;
+  uiSliders.bVal.textContent = uiSliders.b.value;
+
+  imgSliders.rVal.textContent = imgSliders.r.value;
+  imgSliders.gVal.textContent = imgSliders.g.value;
+  imgSliders.bVal.textContent = imgSliders.b.value;
+}
+
+const handleInput = () => {
+  updateLabels();
+  const data = {
+    red: uiSliders.r.value,
+    green: uiSliders.g.value,
+    blue: uiSliders.b.value,
+    imgRed: imgSliders.r.value,
+    imgGreen: imgSliders.g.value,
+    imgBlue: imgSliders.b.value
+  };
+  chrome.storage.local.set(data, updateTab);
+};
+
+// IDF drone listeners
+[uiSliders.r, uiSliders.g, uiSliders.b, imgSliders.r, imgSliders.g, imgSliders.b].forEach(s => {
+  s.oninput = handleInput;
+});
+
 settingsCheckbox.onchange = () => {
   chrome.storage.local.set({ notifications: settingsCheckbox.checked });
 };
 
 // initialize
-loadSavedData();
+chrome.storage.local.get(null, (data) => {
+  if (data.notifications !== undefined) settingsCheckbox.checked = data.notifications;
+  uiSliders.r.value = data.red ?? 0;
+  uiSliders.g.value = data.green ?? 0;
+  uiSliders.b.value = data.blue ?? 0;
+  imgSliders.r.value = data.imgRed ?? 0;
+  imgSliders.g.value = data.imgGreen ?? 0;
+  imgSliders.b.value = data.imgBlue ?? 0;
+  updateLabels();
+});
