@@ -75,25 +75,26 @@ async function applyColorExposureToTab() {
     func: (rOff, gOff, bOff) => {
       
       // only changes the color of a pixel if it's mostly that color
+      // removed the flat addition in the 5th column so it scales existing colors instead of tinting the whole image
       const media = document.querySelectorAll('img, video, canvas');
       media.forEach(m => {
         m.style.filter = `url('data:image/svg+xml,\
           <svg xmlns="http://www.w3.org/2000/svg">\
             <filter id="f" color-interpolation-filters="sRGB">\
               <feColorMatrix type="matrix" values="\
-                ${1 + rOff} 0 0 0 ${rOff > 0 ? rOff * 0.2 : 0} \
-                0 ${1 + gOff} 0 0 ${gOff > 0 ? gOff * 0.2 : 0} \
-                0 0 ${1 + bOff} 0 ${bOff > 0 ? bOff * 0.2 : 0} \
+                ${1 + rOff} 0 0 0 0 \
+                0 ${1 + gOff} 0 0 0 \
+                0 0 ${1 + bOff} 0 0 \
                 0 0 0 1 0" />\
             </filter>\
           </svg>#f')`;
       });
 
-      // 2. background & text typeshi
+      // background & text typeshi
       const elements = document.querySelectorAll('div, p, span, section, header, footer, b, i, a, li, h1, h2, h3');
       
       elements.forEach(el => {
-        // split the two by nature (element racism)
+        // split the two by nature
         const props = ['backgroundColor', 'color'];
         
         props.forEach(prop => {
@@ -131,7 +132,6 @@ async function applyColorExposureToTab() {
     }
   });
 }
-
 // load saved data
 function loadSavedData() {
   chrome.storage.local.get(['notifications', 'red', 'green', 'blue', 'fontSize'], (data) => {
