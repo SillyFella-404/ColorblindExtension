@@ -7,7 +7,7 @@
 
   <div id="view-main" class="view active">
     <h1>Color Blindness Accessibility Filter</h1>
-    <p style = "font-family: Noto Sans Lighter, Ubuntu Lighter, sans-serif; font-size: 15px; font-weight: 200px;">This extension assists with the viewing of webpages by adjusting the brightness levels of colors to make it easier to differentiate individual colors.</p>
+    <p style="font-family: Noto Sans Lighter, Ubuntu Lighter, sans-serif; font-size: 15px; font-weight: 200;">This extension assists with the viewing of webpages by adjusting the brightness levels of colors to make it easier to differentiate individual colors.</p>
     <button id="btn-settings">Open Settings</button>
     <button id="btn-colors">Color Sliders</button>
   </div>
@@ -16,16 +16,16 @@
     <button class="back-btn">Back</button>
     <h2>Settings</h2>
     <label>Text Font Size</label>
-    <body>1-                 50</body>
+    <p>1 — 50</p>
     <span id="sliderValue">50</span>
-    <input type="range" min="1" max="50" step= "1" id="s-slider">
+    <input type="range" min="1" max="50" step="1" id="s-slider">
     <label><input type="checkbox" id="notify-toggle"> Enable Dark Mode</label>
   </div>
 
   <div id="view-colors" class="view">
     <button class="back-btn">Back</button>
     <h2>Colors</h2>
-    <p style = "font-family: Noto Sans Lighter, Ubuntu Lighter, sans-serif; font-size: 15px; font-weight: 200px;">Move the sliders to change the brightness level of the color.</p>
+    <p style="font-family: Noto Sans Lighter, Ubuntu Lighter, sans-serif; font-size: 15px; font-weight: 200;">Move the sliders to change the brightness level of the color.</p>
     
     <div class="accordion-item">
       <button class="accordion-header" id="header-exposure">
@@ -37,26 +37,6 @@
           <input type="range" min="-100" max="100" value="0" id="r-slider">
         </div>
         <div class="slider-group">
-          <label>Green: <span id="g-val">0</span></label>
-          <input type="range" min="-100" max="100" value="0" id="g-slider">
+          <label>Yellow: <span id="y-val">0</span></label>
+          <input type="range" min="-100" max="100" value="0" id="y-slider">
         </div>
-        <div class="slider-group">
-          <label>Blue: <span id="b-val">0</span></label>
-          <input type="range" min="-100" max="100" value="0" id="b-slider">
-        </div>
-      </div>
-    </div>
-
-    <div class="accordion-item">
-      <button class="accordion-header" id="header-other">
-        OTHER <span class="arrow" id="arrow-other">&gt;</span>
-      </button>
-      <div id="section-other" class="accordion-content hidden">
-        <p class="dummy-text">random text element for testing :3</p>
-      </div>
-    </div>
-  </div>
-
-  <script src="popup.js"></script>
-</body>
-</html>
