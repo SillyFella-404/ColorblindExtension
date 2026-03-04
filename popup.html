@@ -21,33 +21,45 @@
     <button class="back-btn">Back</button>
     <h2>Colors</h2>
     
-  <div class="accordion-item">
-    <button class="accordion-header" id="header-exposure">
-      UI & TEXT EXPOSURE <span class="arrow" id="arrow-exposure">&gt;</span>
-    </button>
-    <div id="section-exposure" class="accordion-content hidden">
-      <div class="slider-group">
-        <label>Red Shift: <span id="r-val">0</span></label>
-        <input type="range" min="-100" max="100" value="0" id="r-slider">
-      </div>
-      <div class="slider-group">
-        <label>Green Shift: <span id="g-val">0</span></label>
-        <input type="range" min="-100" max="100" value="0" id="g-slider">
-      </div>
-      <div class="slider-group">
-        <label>Blue Shift: <span id="b-val">0</span></label>
-        <input type="range" min="-100" max="100" value="0" id="b-slider">
+    <div class="accordion-item">
+      <button class="accordion-header" id="header-exposure">
+        UI EXPOSURE <span class="arrow" id="arrow-exposure">&gt;</span>
+      </button>
+      <div id="section-exposure" class="accordion-content hidden">
+        <div class="slider-group">
+          <label>Brightness: <span id="r-val">0</span></label>
+          <input type="range" min="-100" max="100" value="0" id="r-slider">
+        </div>
+        <div class="slider-group">
+          <label>Contrast: <span id="g-val">0</span></label>
+          <input type="range" min="-100" max="100" value="0" id="g-slider">
+        </div>
+        <div class="slider-group">
+          <label>Saturation: <span id="b-val">0</span></label>
+          <input type="range" min="-100" max="100" value="0" id="b-slider">
+        </div>
       </div>
     </div>
-  </div>
-  
-  <div class="accordion-item">
-    <button class="accordion-header" id="header-img-correction">
-      IMAGE CORRECTION <span class="arrow" id="arrow-img-correction">&gt;</span>
-    </button>
-    <div id="section-img-correction" class="accordion-content hidden">
+
+    <div class="accordion-item">
+      <button class="accordion-header" id="header-img-correction">
+        IMAGE CORRECTION <span class="arrow" id="arrow-img-correction">&gt;</span>
+      </button>
+      <div id="section-img-correction" class="accordion-content hidden">
+        <div class="slider-group">
+          <label>Hue: <span id="img-r-val">0</span></label>
+          <input type="range" min="-180" max="180" value="0" id="img-r-slider">
+        </div>
+        <div class="slider-group">
+          <label>Brightness: <span id="img-g-val">0</span></label>
+          <input type="range" min="-100" max="100" value="0" id="img-g-slider">
+        </div>
+        <div class="slider-group">
+          <label>Contrast: <span id="img-b-val">0</span></label>
+          <input type="range" min="-100" max="100" value="0" id="img-b-slider">
+        </div>
       </div>
-  </div>
+    </div>
 
     <div class="accordion-item">
       <button class="accordion-header" id="header-other">
