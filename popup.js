@@ -58,6 +58,7 @@ function updateLabels() {
 
 // update brightness of all elements on page by looping thru them and using the stored values
 // but now we're injecting it into the webpage
+// update brightness of all elements on page
 async function applyColorExposureToTab() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   
@@ -74,10 +75,11 @@ async function applyColorExposureToTab() {
     args: [rOff, gOff, bOff],
     func: (rOff, gOff, bOff) => {
       
-      // only changes the color of a pixel if it's mostly that color
-      // removed the flat addition in the 5th column so it scales existing colors instead of tinting the whole image
+      // Image adjustment using a smarter matrix to isolate dominant colors
       const media = document.querySelectorAll('img, video, canvas');
       media.forEach(m => {
+        // We use a matrix where the target channel is boosted, but we subtract 
+        // a portion of other channels to prevent the "washing out" of neutral colors.
         m.style.filter = `url('data:image/svg+xml,\
           <svg xmlns="http://www.w3.org/2000/svg">\
             <filter id="f" color-interpolation-filters="sRGB">\
@@ -86,17 +88,19 @@ async function applyColorExposureToTab() {
                 0 ${1 + gOff} 0 0 0 \
                 0 0 ${1 + bOff} 0 0 \
                 0 0 0 1 0" />\
+              <feComponentTransfer>\
+                <feFuncR type="linear" slope="${1 + rOff}" />\
+                <feFuncG type="linear" slope="${1 + gOff}" />\
+                <feFuncB type="linear" slope="${1 + bOff}" />\
+              </feComponentTransfer>\
             </filter>\
           </svg>#f')`;
       });
 
-      // background & text typeshi
+      // 2. background & text typeshi
       const elements = document.querySelectorAll('div, p, span, section, header, footer, b, i, a, li, h1, h2, h3');
-      
       elements.forEach(el => {
-        // split the two by nature
         const props = ['backgroundColor', 'color'];
-        
         props.forEach(prop => {
           let orig = el.getAttribute(`data-orig-${prop}`);
           if (!orig) {
@@ -112,12 +116,12 @@ async function applyColorExposureToTab() {
           let g = parseInt(rgb[1]);
           let b = parseInt(rgb[2]);
 
-          // single out the whites
           const isWhite = r > 220 && g > 220 && b > 220;
           const isGray = Math.abs(r - g) < 15 && Math.abs(r - b) < 15;
           if (isWhite && isGray) return;
 
           let offset = 0;
+          // bucket logic for DOM elements
           if (r > g && r > b) offset = rOff;
           else if (g > r && g >= b) offset = gOff;
           else if (b > r && b > g) offset = bOff;
@@ -132,6 +136,7 @@ async function applyColorExposureToTab() {
     }
   });
 }
+
 // load saved data
 function loadSavedData() {
   chrome.storage.local.get(['notifications', 'red', 'green', 'blue', 'fontSize'], (data) => {
