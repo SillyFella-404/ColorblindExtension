@@ -66,6 +66,46 @@ function updateLabels() {
   mVal.textContent = mSlider.value;
 }
 
+//changes the slider values to become a selected preset
+function applyPreset(selectedValue) {
+  //gets the slider element by using its ID.
+  var redSlider = document.getElementById('r-slider');
+  var yellowSlider = document.getElementById('y-slider');
+  var greenSlider = document.getElementById('g-slider');
+  var cyanSlider = document.getElementById('c-slider');
+  var blueSlider = document.getElementById('b-slider');
+  var magentaSlider = document.getElementById('m-slider');
+  
+  if (selectedValue == "Protanomly") {
+    redSlider.value = 80;
+    greenSlider.value = 40;
+  }
+  else if (selectedValue == "Protanopia") {
+    redSlider.value = 80;
+    yellowSlider.value = 40;
+  }
+  else if (selectedValue == "Deuteranomly") {
+    greenSlider.value = 80;
+    redSlider.value = 40;
+  }
+  else if (selectedValue == "Deuteranopia") {
+    greenSlider.value = 80;
+    redSlider.value = 30;
+  }
+  else if (selectedValue == "Tritanomly") {
+    blueSlider.value = 75;
+    greenSlider.value = 25;
+    yellowSlider.value = 60;
+    redSlider.value = 40;
+  }
+  else if (selectedValue == "Tritanopia") {
+    blueSlider.value = 80;
+    greenSlider.value = 20;
+    magentaSlider.value = 80;
+    redSlider.value = 20;
+  }
+}
+
 // apply colors to tab
 async function applyColorExposureToTab() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
