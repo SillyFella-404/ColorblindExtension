@@ -47,6 +47,7 @@ function setupAccordion(headerId, contentId, arrowId) {
 }
 
 setupAccordion('header-exposure', 'section-exposure', 'arrow-exposure');
+setupAccordion('header-presets', 'section-presets', 'arrow-presets');
 setupAccordion('header-other', 'section-other', 'arrow-other');
 
 // update text labels to match slider values
