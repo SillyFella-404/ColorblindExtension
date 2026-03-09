@@ -39,6 +39,14 @@ const cVal = document.getElementById('c-val');
 const bVal = document.getElementById('b-val');
 const mVal = document.getElementById('m-val');
 
+//gets the slider element by using its ID.
+var redSlider = document.getElementById('r-slider');
+var yellowSlider = document.getElementById('y-slider');
+var greenSlider = document.getElementById('g-slider');
+var cyanSlider = document.getElementById('c-slider');
+var blueSlider = document.getElementById('b-slider');
+var magentaSlider = document.getElementById('m-slider');
+
 // accordion logic 
 function setupAccordion(headerId, contentId, arrowId) {
   const header = document.getElementById(headerId);
@@ -67,15 +75,7 @@ function updateLabels() {
 }
 
 //changes the slider values to become a selected preset
-function applyPreset(selectedValue) {
-  //gets the slider element by using its ID.
-  var redSlider = document.getElementById('r-slider');
-  var yellowSlider = document.getElementById('y-slider');
-  var greenSlider = document.getElementById('g-slider');
-  var cyanSlider = document.getElementById('c-slider');
-  var blueSlider = document.getElementById('b-slider');
-  var magentaSlider = document.getElementById('m-slider');
-  
+function applyPreset(selectedValue) {  
   if (selectedValue == "Protanomly") {
     redSlider.value = 80;
     greenSlider.value = 40;
@@ -104,6 +104,9 @@ function applyPreset(selectedValue) {
     magentaSlider.value = 80;
     redSlider.value = 20;
   }
+
+  updateLabels();
+  applyColorExposureToTab();
 }
 
 // apply colors to tab
