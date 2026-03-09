@@ -68,6 +68,12 @@ function updateLabels() {
 
 //changes the slider values to become a selected preset
 function applyPreset(selectedValue) {
+  const dropdown = document.getElementById('preset-dropdown');
+  dropdown.dispatchEvent(new Event('change', { bubbles: true }));
+  document.getElementById('preset-dropdown').addEventListener('change', (e) => {
+    applyPreset(e.target.value);
+  });
+  
   rSlider.value = 0;
   ySlider.value = 0;
   gSlider.value = 0;
@@ -102,6 +108,15 @@ function applyPreset(selectedValue) {
     gSlider.value = 20;
     mSlider.value = 80;
     rSlider.value = 20;
+  }
+
+  else {
+    rSlider.value = 0;
+    ySlider.value = 0;
+    gSlider.value = 0;
+    cSlider.value = 0;
+    bSlider.value = 0;
+    mSlider.value = 0;
   }
   
   updateLabels();
