@@ -79,7 +79,7 @@ function applyPreset(selectedValue) {
   const allSliders = [redSlider, yellowSlider, greenSlider, cyanSlider, blueSlider, magentaSlider];
   allSliders.forEach(s => s.value = 0);
   
-  if (selectedValue == "Protanomly") {
+  if (selectedValue == "Protanomaly") {
     redSlider.value = 80;
     greenSlider.value = 40;
   }
@@ -87,7 +87,7 @@ function applyPreset(selectedValue) {
     redSlider.value = 80;
     yellowSlider.value = 40;
   }
-  else if (selectedValue == "Deuteranomly") {
+  else if (selectedValue == "Deuteranomaly") {
     greenSlider.value = 80;
     redSlider.value = 40;
   }
@@ -95,7 +95,7 @@ function applyPreset(selectedValue) {
     greenSlider.value = 80;
     redSlider.value = 30;
   }
-  else if (selectedValue == "Tritanomly") {
+  else if (selectedValue == "Tritanomaly") {
     blueSlider.value = 75;
     greenSlider.value = 25;
     yellowSlider.value = 60;
