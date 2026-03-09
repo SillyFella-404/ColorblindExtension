@@ -39,14 +39,6 @@ const cVal = document.getElementById('c-val');
 const bVal = document.getElementById('b-val');
 const mVal = document.getElementById('m-val');
 
-//gets the slider element by using its ID.
-var redSlider = document.getElementById('r-slider');
-var yellowSlider = document.getElementById('y-slider');
-var greenSlider = document.getElementById('g-slider');
-var cyanSlider = document.getElementById('c-slider');
-var blueSlider = document.getElementById('b-slider');
-var magentaSlider = document.getElementById('m-slider');
-
 // accordion logic 
 function setupAccordion(headerId, contentId, arrowId) {
   const header = document.getElementById(headerId);
