@@ -76,49 +76,41 @@ function updateLabels() {
 
 //changes the slider values to become a selected preset
 function applyPreset(selectedValue) {
-  const dropdown = document.getElementById('preset-dropdown');
-  dropdown.value = selectedValue;
-  dropdown.dispatchEvent(new Event('change', { bubbles: true }));
-  const allSliders = [redSlider, yellowSlider, greenSlider, cyanSlider, blueSlider, magentaSlider];
-  allSliders.forEach(s => s.value = 0);
+  rSlider.value = 0;
+  ySlider.value = 0;
+  gSlider.value = 0;
+  cSlider.value = 0;
+  bSlider.value = 0;
+  mSlider.value = 0;
   
   if (selectedValue == "Protanomaly") {
-    redSlider.value = 80;
-    greenSlider.value = 40;
+    rSlider.value = 80;
+    gSlider.value = 40;
   }
   else if (selectedValue == "Protanopia") {
-    redSlider.value = 80;
-    yellowSlider.value = 40;
+    rSlider.value = 80;
+    ySlider.value = 40;
   }
   else if (selectedValue == "Deuteranomaly") {
-    greenSlider.value = 80;
-    redSlider.value = 40;
+    gSlider.value = 80;
+    rSlider.value = 40;
   }
   else if (selectedValue == "Deuteranopia") {
-    greenSlider.value = 80;
-    redSlider.value = 30;
+    gSlider.value = 80;
+    rSlider.value = 30;
   }
   else if (selectedValue == "Tritanomaly") {
-    blueSlider.value = 75;
-    greenSlider.value = 25;
-    yellowSlider.value = 60;
-    redSlider.value = 40;
+    bSlider.value = 75;
+    gSlider.value = 25;
+    ySlider.value = 60;
+    rSlider.value = 40;
   }
   else if (selectedValue == "Tritanopia") {
-    blueSlider.value = 80;
-    greenSlider.value = 20;
-    magentaSlider.value = 80;
-    redSlider.value = 20;
+    bSlider.value = 80;
+    gSlider.value = 20;
+    mSlider.value = 80;
+    rSlider.value = 20;
   }
-
-  chrome.storage.local.set({
-    red: redSlider.value,
-    yellow: yellowSlider.value,
-    green: greenSlider.value,
-    cyan: cyanSlider.value,
-    blue: blueSlider.value,
-    magenta: magentaSlider.value
-  });
   
   updateLabels();
   handleSliderInput();
