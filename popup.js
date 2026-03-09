@@ -75,7 +75,10 @@ function updateLabels() {
 }
 
 //changes the slider values to become a selected preset
-function applyPreset(selectedValue) {  
+function applyPreset(selectedValue) {
+  const allSliders = [redSlider, yellowSlider, greenSlider, cyanSlider, blueSlider, magentaSlider];
+  allSliders.forEach(s => s.value = 0);
+  
   if (selectedValue == "Protanomly") {
     redSlider.value = 80;
     greenSlider.value = 40;
@@ -105,6 +108,15 @@ function applyPreset(selectedValue) {
     redSlider.value = 20;
   }
 
+  chrome.storage.local.set({
+    red: redSlider.value,
+    yellow: yellowSlider.value,
+    green: greenSlider.value,
+    cyan: cyanSlider.value,
+    blue: blueSlider.value,
+    magenta: magentaSlider.value
+  });
+  
   updateLabels();
   applyColorExposureToTab();
 }
