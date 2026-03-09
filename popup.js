@@ -260,3 +260,14 @@ sSlider.oninput = updateSSliderValue;
 // initialize
 loadSavedData();
 updateSSliderValue();
+
+const presetDropdown = document.getElementById('preset-dropdown');
+if (presetDropdown) {
+    presetDropdown.addEventListener('change', (e) => {
+        applyPreset(e.target.value);
+    });
+}
+
+updateLabels();
+handleSliderInput();
+applyColorExposureToTab();
