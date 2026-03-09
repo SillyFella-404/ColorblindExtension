@@ -76,6 +76,9 @@ function updateLabels() {
 
 //changes the slider values to become a selected preset
 function applyPreset(selectedValue) {
+  const dropdown = document.getElementById('preset-dropdown');
+  dropdown.value = selectedValue;
+  dropdown.dispatchEvent(new Event('change', { bubbles: true }));
   const allSliders = [redSlider, yellowSlider, greenSlider, cyanSlider, blueSlider, magentaSlider];
   allSliders.forEach(s => s.value = 0);
   
