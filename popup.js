@@ -118,6 +118,7 @@ function applyPreset(selectedValue) {
   });
   
   updateLabels();
+  handleSliderInput();
   applyColorExposureToTab();
 }
 
