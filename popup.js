@@ -14,6 +14,7 @@ function showView(viewKey) {
 // navigation
 document.getElementById('btn-settings').onclick = () => showView('settings');
 document.getElementById('btn-colors').onclick = () => showView('colors');
+document.getElementByID('btn-textures').onclick = () => showView('textures');
 
 document.querySelectorAll('.back-btn').forEach(btn => {
   btn.onclick = () => showView('main');
