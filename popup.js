@@ -2,7 +2,8 @@
 const views = {
   main: document.getElementById('view-main'),
   settings: document.getElementById('view-settings'),
-  colors: document.getElementById('view-colors')
+  colors: document.getElementById('view-colors'),
+  textures: document.getElementById('view-textures)
 };
 
 // helper to switch views
@@ -40,6 +41,17 @@ const cVal = document.getElementById('c-val');
 const bVal = document.getElementById('b-val');
 const mVal = document.getElementById('m-val');
 
+//texture logic stuff
+const textureIds = ['red-texture', 'yellow-texture', 'green-texture', 'cyan-texture', 'blue-texture', 'magenta-texture'];
+textureIds.forEach(id => {
+  const element = document.elementById(id);
+  element.onChange = () => {
+    const val = element.value;
+    chrome.storage.local.set({ [id]: val});
+  }
+}
+
+                    
 // accordion logic 
 function setupAccordion(headerId, contentId, arrowId) {
   const header = document.getElementById(headerId);
@@ -154,7 +166,7 @@ async function applyColorExposureToTab() {
 }
 
 function loadSavedData() {
-  chrome.storage.local.get(['notifications', 'red', 'yellow', 'green', 'cyan', 'blue', 'magenta', 'fontSize'], (data) => {
+  chrome.storage.local.get(['notifications', 'red', 'yellow', 'green', 'cyan', 'blue', 'magenta', 'fontSize', 'red-texture', 'yellow-texture', 'green-texture', 'cyan-texture', 'blue-texture', 'magenta-texture'], (data) => {
     if (data.notifications !== undefined) settingsCheckbox.checked = data.notifications;
     rSlider.value = data.red || 0;
     ySlider.value = data.yellow || 0;
