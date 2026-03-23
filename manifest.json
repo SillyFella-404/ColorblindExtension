@@ -7,4 +7,16 @@
     "default_popup": "popup.html"
   },
   "permissions": ["storage", "activeTab", "scripting"]
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["textures/*.png"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }
