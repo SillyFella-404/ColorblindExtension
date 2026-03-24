@@ -1,17 +1,17 @@
-// view containers
+// View containers
 const views = {
   main: document.getElementById('view-main'),
   settings: document.getElementById('view-settings'),
   colors: document.getElementById('view-colors')
 };
 
-// helper to switch views
+// Helper to switch views
 function showView(viewKey) {
   Object.values(views).forEach(v => v.classList.remove('active'));
   views[viewKey].classList.add('active');
 }
 
-// navigation
+// Navigation
 document.getElementById('btn-settings').onclick = () => showView('settings');
 document.getElementById('btn-colors').onclick = () => showView('colors');
 
@@ -19,27 +19,29 @@ document.querySelectorAll('.back-btn').forEach(btn => {
   btn.onclick = () => showView('main');
 });
 
-// elements
+// Settings Elements
 const settingsCheckbox = document.getElementById('notify-toggle');
 const sSlider = document.getElementById('s-slider');
 const SSliderValueDisplay = document.getElementById('sliderValue');
 
-// exposure sliders (Original + New)
+// Color Sliders (Updated to Red, Orange, Yellow, Green, Blue, Purple)
 const rSlider = document.getElementById('r-slider');
+const oSlider = document.getElementById('o-slider');
 const ySlider = document.getElementById('y-slider');
 const gSlider = document.getElementById('g-slider');
-const cSlider = document.getElementById('c-slider');
 const bSlider = document.getElementById('b-slider');
-const mSlider = document.getElementById('m-slider');
+const pSlider = document.getElementById('p-slider');
 
 const rVal = document.getElementById('r-val');
+const oVal = document.getElementById('o-val');
 const yVal = document.getElementById('y-val');
 const gVal = document.getElementById('g-val');
-const cVal = document.getElementById('c-val');
 const bVal = document.getElementById('b-val');
-const mVal = document.getElementById('m-val');
+const pVal = document.getElementById('p-val');
 
-// accordion logic 
+const allColorSliders = [rSlider, oSlider, ySlider, gSlider, bSlider, pSlider];
+
+// Accordion logic 
 function setupAccordion(headerId, contentId, arrowId) {
   const header = document.getElementById(headerId);
   const content = document.getElementById(contentId);
@@ -56,17 +58,17 @@ setupAccordion('header-exposure', 'section-exposure', 'arrow-exposure');
 setupAccordion('header-presets', 'section-presets', 'arrow-presets');
 setupAccordion('header-other', 'section-other', 'arrow-other');
 
-// update text labels
+// Update text labels
 function updateLabels() {
   rVal.textContent = rSlider.value;
+  oVal.textContent = oSlider.value;
   yVal.textContent = ySlider.value;
   gVal.textContent = gSlider.value;
-  cVal.textContent = cSlider.value;
   bVal.textContent = bSlider.value;
-  mVal.textContent = mSlider.value;
+  pVal.textContent = pSlider.value;
 }
 
-// apply colors to tab
+// Apply colors to tab
 async function applyColorExposureToTab() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   
@@ -74,11 +76,11 @@ async function applyColorExposureToTab() {
 
   const offsets = {
     r: parseFloat(rSlider.value) / 100,
+    o: parseFloat(oSlider.value) / 100,
     y: parseFloat(ySlider.value) / 100,
     g: parseFloat(gSlider.value) / 100,
-    c: parseFloat(cSlider.value) / 100,
     b: parseFloat(bSlider.value) / 100,
-    m: parseFloat(mSlider.value) / 100
+    p: parseFloat(pSlider.value) / 100
   };
 
   chrome.scripting.executeScript({
@@ -86,11 +88,11 @@ async function applyColorExposureToTab() {
     args: [offsets],
     func: (o) => {
       
-      // 1. IMAGE ADJUSTMENT (Fixed Matrix)
-      // Yellow affects R and G. Cyan affects G and B. Magenta affects R and B.
-      const rM = 1 + o.r + (o.y * 0.5) + (o.m * 0.5);
-      const gM = 1 + o.g + (o.y * 0.5) + (o.c * 0.5);
-      const bM = 1 + o.b + (o.c * 0.5) + (o.m * 0.5);
+      // 1. IMAGE ADJUSTMENT (SVG Matrix)
+      // Orange is high R, partial G. Purple is high B, partial R.
+      const rM = 1 + o.r + (o.o * 0.6) + (o.p * 0.4);
+      const gM = 1 + o.g + (o.y * 0.5) + (o.o * 0.3);
+      const bM = 1 + o.b + (o.p * 0.7);
 
       const media = document.querySelectorAll('img, video, canvas');
       media.forEach(m => {
@@ -128,22 +130,22 @@ async function applyColorExposureToTab() {
           let b = parseInt(rgb[2]);
 
           const isNeutral = Math.abs(r - g) < 20 && Math.abs(r - b) < 20;
-          if (isNeutral && r > 200) return; // skip whites/grays
+          if (isNeutral && r > 200) return; // skip whites/light grays
 
           let offset = 0;
           const max = Math.max(r, g, b);
 
-          // Bucket logic for Primary and Secondary colors
-          if (r > 180 && g > 180 && b < 120) offset = o.y;      // Yellow
-          else if (g > 180 && b > 180 && r < 120) offset = o.c; // Cyan
-          else if (r > 180 && b > 180 && g < 120) offset = o.m; // Magenta
+          // Enhanced Bucket logic for 6 colors
+          if (r > 200 && g > 80 && g < 170 && b < 100) offset = o.o;      // Orange
+          else if (r > 180 && g > 180 && b < 120) offset = o.y;           // Yellow
+          else if (r > 100 && b > 150 && g < 130) offset = o.p;           // Purple
           else if (r === max) offset = o.r;
           else if (g === max) offset = o.g;
           else if (b === max) offset = o.b;
 
-          const newR = Math.min(255, Math.max(0, r + (offset * 255)));
-          const newG = Math.min(255, Math.max(0, g + (offset * 255)));
-          const newB = Math.min(255, Math.max(0, b + (offset * 255)));
+          const newR = Math.min(255, Math.max(0, r + (offset * 128)));
+          const newG = Math.min(255, Math.max(0, g + (offset * 128)));
+          const newB = Math.min(255, Math.max(0, b + (offset * 128)));
 
           el.style[prop] = `rgb(${Math.round(newR)}, ${Math.round(newG)}, ${Math.round(newB)})`;
         });
@@ -153,14 +155,16 @@ async function applyColorExposureToTab() {
 }
 
 function loadSavedData() {
-  chrome.storage.local.get(['notifications', 'red', 'yellow', 'green', 'cyan', 'blue', 'magenta', 'fontSize'], (data) => {
+  chrome.storage.local.get(['notifications', 'red', 'orange', 'yellow', 'green', 'blue', 'purple', 'fontSize'], (data) => {
     if (data.notifications !== undefined) settingsCheckbox.checked = data.notifications;
+    
     rSlider.value = data.red || 0;
+    oSlider.value = data.orange || 0;
     ySlider.value = data.yellow || 0;
     gSlider.value = data.green || 0;
-    cSlider.value = data.cyan || 0;
     bSlider.value = data.blue || 0;
-    mSlider.value = data.magenta || 0;
+    pSlider.value = data.purple || 0;
+
     if (data.fontSize) {
       sSlider.value = data.fontSize;
       updateSSliderValue();      
@@ -174,23 +178,23 @@ function updateSSliderValue(){
   chrome.storage.local.set({ fontSize: sSlider.value });
 }
 
-// Single function to handle all slider events
+// Handle all slider events
 const handleSliderInput = () => {
   updateLabels();
   chrome.storage.local.set({
     red: rSlider.value,
+    orange: oSlider.value,
     yellow: ySlider.value,
     green: gSlider.value,
-    cyan: cSlider.value,
     blue: bSlider.value,
-    magenta: mSlider.value
+    purple: pSlider.value
   });
 };
 
 // Listeners
-[rSlider, ySlider, gSlider, cSlider, bSlider, mSlider].forEach(slider => {
+allColorSliders.forEach(slider => {
   slider.oninput = handleSliderInput;
-  slider.onchange = applyColorExposureToTab; // Only inject script when done moving
+  slider.onchange = applyColorExposureToTab; 
 });
 
 settingsCheckbox.onchange = () => {
@@ -199,6 +203,6 @@ settingsCheckbox.onchange = () => {
 
 sSlider.oninput = updateSSliderValue;
 
-// initialize
+// Initialize
 loadSavedData();
 updateSSliderValue();
