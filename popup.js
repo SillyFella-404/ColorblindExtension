@@ -1,4 +1,4 @@
-// View containers
+// view containers
 const views = {
   main: document.getElementById('view-main'),
   settings: document.getElementById('view-settings'),
@@ -19,12 +19,12 @@ document.querySelectorAll('.back-btn').forEach(btn => {
   btn.onclick = () => showView('main');
 });
 
-// Settings Elements
+// settings elements
 const settingsCheckbox = document.getElementById('notify-toggle');
 const sSlider = document.getElementById('s-slider');
 const SSliderValueDisplay = document.getElementById('sliderValue');
 
-// Color Sliders (Updated to Red, Orange, Yellow, Green, Blue, Purple)
+// who up sliding they colors rn
 const rSlider = document.getElementById('r-slider');
 const oSlider = document.getElementById('o-slider');
 const ySlider = document.getElementById('y-slider');
@@ -41,7 +41,7 @@ const pVal = document.getElementById('p-val');
 
 const allColorSliders = [rSlider, oSlider, ySlider, gSlider, bSlider, pSlider];
 
-// Accordion logic 
+// stolen accordians (like the instrument)
 function setupAccordion(headerId, contentId, arrowId) {
   const header = document.getElementById(headerId);
   const content = document.getElementById(contentId);
@@ -58,7 +58,7 @@ setupAccordion('header-exposure', 'section-exposure', 'arrow-exposure');
 setupAccordion('header-presets', 'section-presets', 'arrow-presets');
 setupAccordion('header-other', 'section-other', 'arrow-other');
 
-// Update text labels
+// update slider value texts when slider gets moved
 function updateLabels() {
   rVal.textContent = rSlider.value;
   oVal.textContent = oSlider.value;
@@ -68,7 +68,7 @@ function updateLabels() {
   pVal.textContent = pSlider.value;
 }
 
-// Apply colors to tab
+// apply colors (script is injected into webapage)
 async function applyColorExposureToTab() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   
@@ -88,7 +88,8 @@ async function applyColorExposureToTab() {
     args: [offsets],
     func: (o) => {
       
-      // 1. IMAGE ADJUSTMENT (SVG Matrix)
+      // Image adjustment courtery of the incomprehensible svg matrix
+      // DO NOT TOUCH EVERYTIME I TRY IT BREAKS AGAIN
       // Orange is high R, partial G. Purple is high B, partial R.
       const rM = 1 + o.r + (o.o * 0.6) + (o.p * 0.4);
       const gM = 1 + o.g + (o.y * 0.5) + (o.o * 0.3);
@@ -108,7 +109,7 @@ async function applyColorExposureToTab() {
           </svg>#f')`;
       });
 
-      // 2. DOM ELEMENT ADJUSTMENT
+      // adjust elements
       const elements = document.querySelectorAll('div, p, span, section, header, footer, b, i, a, li, h1, h2, h3');
       
       elements.forEach(el => {
@@ -130,15 +131,15 @@ async function applyColorExposureToTab() {
           let b = parseInt(rgb[2]);
 
           const isNeutral = Math.abs(r - g) < 20 && Math.abs(r - b) < 20;
-          if (isNeutral && r > 200) return; // skip whites/light grays
+          if (isNeutral && r > 200) return; // skip whites/light grays (we don't like them)
 
           let offset = 0;
           const max = Math.max(r, g, b);
 
-          // Enhanced Bucket logic for 6 colors
-          if (r > 200 && g > 80 && g < 170 && b < 100) offset = o.o;      // Orange
-          else if (r > 180 && g > 180 && b < 120) offset = o.y;           // Yellow
-          else if (r > 100 && b > 150 && g < 130) offset = o.p;           // Purple
+          // bigger bucket for 6 colors
+          if (r > 200 && g > 80 && g < 170 && b < 100) offset = o.o;      // organge
+          else if (r > 180 && g > 180 && b < 120) offset = o.y;           // yeller
+          else if (r > 100 && b > 150 && g < 130) offset = o.p;           // nurple
           else if (r === max) offset = o.r;
           else if (g === max) offset = o.g;
           else if (b === max) offset = o.b;
@@ -178,7 +179,7 @@ function updateSSliderValue(){
   chrome.storage.local.set({ fontSize: sSlider.value });
 }
 
-// Handle all slider events
+// slider input
 const handleSliderInput = () => {
   updateLabels();
   chrome.storage.local.set({
@@ -191,7 +192,7 @@ const handleSliderInput = () => {
   });
 };
 
-// Listeners
+// listeners for slider input ns tuff
 allColorSliders.forEach(slider => {
   slider.oninput = handleSliderInput;
   slider.onchange = applyColorExposureToTab; 
@@ -203,6 +204,6 @@ settingsCheckbox.onchange = () => {
 
 sSlider.oninput = updateSSliderValue;
 
-// Initialize
+// initialize
 loadSavedData();
 updateSSliderValue();
