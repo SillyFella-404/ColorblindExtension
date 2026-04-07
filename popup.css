@@ -128,7 +128,24 @@ input[type="range"] {
   background: transparent;
   cursor: pointer;
 }
+/* Font-size slider track */
+#s-slider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 10px;
+  border-radius: 5px;
+  background: #000000;
+}
 
+
+#s-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 2px black;
+  margin-top: -3px;
+}
 /* Primary Gradients */
 #r-slider::-webkit-slider-runnable-track {
   width: 100%; height: 10px; border-radius: 5px;
