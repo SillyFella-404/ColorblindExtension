@@ -41,6 +41,21 @@ const pVal = document.getElementById('p-val');
 
 const allColorSliders = [rSlider, oSlider, ySlider, gSlider, bSlider, pSlider];
 
+// preset controls
+const presetSelect = document.getElementById('presets');
+const btnSaveCustom = document.getElementById('btn-save-custom');
+const btnClearCustom = document.getElementById('btn-clear-custom');
+const btnReset = document.getElementById('btn-reset');
+
+const presetValues = {
+  'Protanomaly':  { r: 50, o: 0, y: 0, g: -20, b: 0, p: 0 },
+  'Protanopia':   { r: 50, o: 0, y: 0, g: -20, b: 0, p: 0 },
+  'Deuteranomly': { r: -20, o: 0, y: 0, g: 50, b: 0, p: 0 },
+  'Deuteranopia': { r: -20, o: 0, y: 0, g: 50, b: 0, p: 0 },
+  'Tritanomly':   { r: 0, o: 0, y: -20, g: 0, b: 50, p: 0 },
+  'Tritanopia':   { r: 0, o: 0, y: -20, g: 0, b: 50, p: 0 }
+};
+
 // stolen accordians (like the instrument)
 function setupAccordion(headerId, contentId, arrowId) {
   const header = document.getElementById(headerId);
@@ -138,8 +153,8 @@ async function applyColorExposureToTab() {
 
           // bigger bucket for 6 colors
           if (r > 200 && g > 80 && g < 170 && b < 100) offset = o.o;      // organge
-          else if (r > 180 && g > 180 && b < 120) offset = o.y;           // yeller
-          else if (r > 100 && b > 150 && g < 130) offset = o.p;           // nurple
+          else if (r > 180 && g > 180 && b < 120) offset = o.y;            // yeller
+          else if (r > 100 && b > 150 && g < 130) offset = o.p;            // nurple
           else if (r === max) offset = o.r;
           else if (g === max) offset = o.g;
           else if (b === max) offset = o.b;
@@ -156,7 +171,7 @@ async function applyColorExposureToTab() {
 }
 
 function loadSavedData() {
-  chrome.storage.local.get(['notifications', 'red', 'orange', 'yellow', 'green', 'blue', 'purple', 'fontSize'], (data) => {
+  chrome.storage.local.get(['notifications', 'red', 'orange', 'yellow', 'green', 'blue', 'purple', 'fontSize', 'selectedPreset'], (data) => {
     if (data.notifications !== undefined) settingsCheckbox.checked = data.notifications;
     
     rSlider.value = data.red || 0;
@@ -165,6 +180,10 @@ function loadSavedData() {
     gSlider.value = data.green || 0;
     bSlider.value = data.blue || 0;
     pSlider.value = data.purple || 0;
+
+    if (data.selectedPreset) {
+      presetSelect.value = data.selectedPreset;
+    }
 
     if (data.fontSize) {
       sSlider.value = data.fontSize;
@@ -179,6 +198,19 @@ function updateSSliderValue(){
   chrome.storage.local.set({ fontSize: sSlider.value });
 }
 
+// Sets UI sliders, applies to tab, and saves to storage
+function applySliders(vals) {
+  rSlider.value = vals.r || 0;
+  oSlider.value = vals.o || 0;
+  ySlider.value = vals.y || 0;
+  gSlider.value = vals.g || 0;
+  bSlider.value = vals.b || 0;
+  pSlider.value = vals.p || 0;
+  
+  handleSliderInput();
+  applyColorExposureToTab();
+}
+
 // slider input
 const handleSliderInput = () => {
   updateLabels();
@@ -188,15 +220,74 @@ const handleSliderInput = () => {
     yellow: ySlider.value,
     green: gSlider.value,
     blue: bSlider.value,
-    purple: pSlider.value
+    purple: pSlider.value,
+    selectedPreset: presetSelect.value
   });
 };
 
 // listeners for slider input ns tuff
 allColorSliders.forEach(slider => {
-  slider.oninput = handleSliderInput;
+  slider.oninput = () => {
+    presetSelect.value = 'none'; // Clear preset if user manually tweaks
+    handleSliderInput();
+  };
   slider.onchange = applyColorExposureToTab; 
 });
+
+// listeners for presets & resets
+presetSelect.onchange = () => {
+  const val = presetSelect.value;
+  
+  if (val === 'none') return;
+
+  if (val === 'custom') {
+    chrome.storage.local.get(['customPreset'], (data) => {
+      if (data.customPreset) {
+        applySliders(data.customPreset);
+      } else {
+        alert('No custom preset saved yet.');
+        presetSelect.value = 'none';
+        handleSliderInput();
+      }
+    });
+    return;
+  }
+
+  if (presetValues[val]) {
+    applySliders(presetValues[val]);
+  }
+};
+
+btnSaveCustom.onclick = () => {
+  const customPreset = {
+    r: rSlider.value,
+    o: oSlider.value,
+    y: ySlider.value,
+    g: gSlider.value,
+    b: bSlider.value,
+    p: pSlider.value
+  };
+  chrome.storage.local.set({ customPreset }, () => {
+    presetSelect.value = 'custom';
+    handleSliderInput();
+    alert('Custom preset saved successfully!');
+  });
+};
+
+btnClearCustom.onclick = () => {
+  chrome.storage.local.remove('customPreset', () => {
+    if (presetSelect.value === 'custom') {
+      presetSelect.value = 'none';
+      handleSliderInput();
+    }
+    alert('Custom preset cleared.');
+  });
+};
+
+btnReset.onclick = () => {
+  presetSelect.value = 'none';
+  applySliders({ r: 0, o: 0, y: 0, g: 0, b: 0, p: 0 });
+};
 
 settingsCheckbox.onchange = () => {
   chrome.storage.local.set({ notifications: settingsCheckbox.checked });
