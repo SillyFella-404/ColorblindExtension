@@ -174,9 +174,11 @@ function loadSavedData() {
   });
 }
 
-function updateSSliderValue(){
-  SSliderValueDisplay.textContent = sSlider.value;
-  chrome.storage.local.set({ fontSize: sSlider.value });
+function updateSSliderValue() {
+  const size = sSlider.value;
+  SSliderValueDisplay.textContent = size;
+  chrome.storage.local.set({ fontSize: size });
+  document.body.style.fontSize = size + 'px';
 }
 
 // slider input
