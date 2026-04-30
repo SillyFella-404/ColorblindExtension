@@ -56,15 +56,18 @@
           <label>Purple: <span id="p-val">0</span></label>
           <input type="range" min="-100" max="100" value="0" id="p-slider">
         </div>
+        <button id="btn-reset" class="danger-btn" style="width: 100%; margin-top: 10px;">Reset All to 0</button>
       </div>
-      </div>
+    </div>
 
-        <div class="accordion-item">
+    <div class="accordion-item">
       <button class="accordion-header" id="header-presets">
         PRESETS <span class="arrow" id="arrow-presets">&gt;</span>
       </button>
       <div id="section-presets" class="accordion-content hidden">
-        <select name="Presets" id="presets">
+        <select name="Presets" id="presets" style="width: 100%; margin-bottom: 10px; padding: 5px;">
+          <option value="none">None</option>
+          <option value="custom">Custom</option>
           <optgroup label="Red-Green">
             <option value="Protanomaly">Protanomaly</option>
             <option value="Protanopia">Protanopia</option>
@@ -76,6 +79,8 @@
             <option value="Tritanopia">Tritanopia</option>
           </optgroup>
         </select>
+        <button id="btn-save-custom" class="action-btn" style="width: 100%;">Save Current as Custom</button>
+        <button id="btn-clear-custom" class="danger-btn" style="width: 100%; margin-top: 5px;">Clear Custom Preset</button>
       </div>
     </div>
 
@@ -88,9 +93,6 @@
       </div>
     </div>
   </div>
-    </div>
-
-
 
   <script src="popup.js"></script>
 </body>
