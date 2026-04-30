@@ -6,5 +6,11 @@
   "action": {
     "default_popup": "popup.html"
   },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "host_permissions": [
+    "<all_urls>"
+  ],
   "permissions": ["storage", "activeTab", "scripting"]
 }
