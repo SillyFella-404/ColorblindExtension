@@ -146,7 +146,7 @@ async function applyColorExposureToTab() {
           let b = parseInt(rgb[2]);
 
           const isNeutral = Math.abs(r - g) < 20 && Math.abs(r - b) < 20;
-          if (isNeutral && r > 200) return; // skip whites/light grays (we don't like them)
+          if (isNeutral) return; // skip ALL grays, not just light ones (we REALLY don't like them)
 
           let offset = 0;
           const max = Math.max(r, g, b);
